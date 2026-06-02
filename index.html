@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kai Antoine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090D;
+      --surface: #111116;
+      --surface2: #18181F;
+      --border: rgba(255,255,255,0.07);
+      --border-hover: rgba(200,169,106,0.3);
+      --text-primary: #F0EAE0;
+      --text-secondary: #7A7870;
+      --text-muted: #4A4845;
+      --accent: #C8A96A;
+      --accent-dim: rgba(200,169,106,0.12);
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--sans);
+      font-weight: 300;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.25rem 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    nav.scrolled {
+      background: rgba(9,9,13,0.92);
+      backdrop-filter: blur(12px);
+      border-color: var(--border);
+    }
+    .nav-name {
+      font-family: var(--serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--text-primary);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+
+    /* SECTIONS */
+    section { padding: 6rem 3rem; max-width: 1100px; margin: 0 auto; }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 5rem;
+      padding-top: 8rem;
+      max-width: 100%;
+      padding-left: 3rem;
+      padding-right: 3rem;
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--sans);
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(4rem, 10vw, 8.5rem);
+      font-weight: 300;
+      line-height: 0.92;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      margin-bottom: 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.8s ease 0.35s forwards;
+    }
+    .hero-name em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .hero-bottom {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 2rem;
+      opacity: 0;
+      transform: translateY(16px);
+      animation: fadeUp 0.7s ease 0.55s forwards;
+    }
+
+    .hero-tagline {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      max-width: 420px;
+      line-height: 1.6;
+    }
+
+    .hero-meta {
+      text-align: right;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      line-height: 1.9;
+    }
+
+    /* DIVIDER */
+    .divider {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 3rem;
+      border: none;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ABOUT */
+    .about-inner {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .section-label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding-top: 0.35rem;
+    }
+    .about-text p {
+      font-size: 1.15rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+      margin-bottom: 1rem;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+    .about-text strong {
+      color: var(--text-primary);
+      font-weight: 400;
+    }
+
+    /* WORK */
+    .work-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 3rem;
+    }
+    .work-title {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      letter-spacing: -0.01em;
+    }
+    .work-count {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+
+    .cases {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+    }
+
+    .case-card {
+      background: var(--bg);
+      padding: 2.5rem;
+      cursor: pointer;
+      transition: background 0.25s;
+      position: relative;
+      overflow: hidden;
+    }
+    .case-card:nth-child(3) {
+      grid-column: span 2;
+      border-top: 1px solid var(--border);
+    }
+    .case-card:hover { background: var(--surface); }
+    .case-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 2px;
+      height: 0;
+      background: var(--accent);
+      transition: height 0.4s ease;
+    }
+    .case-card:hover::before { height: 100%; }
+
+    .case-number {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .case-category {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .tag {
+      font-size: 0.68rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-dim);
+      padding: 3px 10px;
+      border: 1px solid rgba(200,169,106,0.2);
+    }
+    .case-title {
+      font-family: var(--serif);
+      font-size: 1.9rem;
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 1rem;
+      letter-spacing: -0.01em;
+    }
+    .case-org {
+      font-size: 0.8rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .case-body {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .case-detail {
+      margin-top: 2rem;
+      display: none;
+      border-top: 1px solid var(--border);
+      padding-top: 2rem;
+    }
+    .case-card.open .case-detail { display: block; }
+    .case-card.open::before { height: 100%; }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 2rem;
+    }
+    .detail-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+    .detail-col p {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .detail-col ul {
+      list-style: none;
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+    .detail-col ul li::before {
+      content: '—';
+      color: var(--text-muted);
+      margin-right: 0.5rem;
+    }
+    .key-insight {
+      margin-top: 2rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--accent-dim);
+      border-left: 2px solid var(--accent);
+    }
+    .key-insight p {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      line-height: 1.65;
+    }
+    .key-insight p span {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+
+    .case-toggle {
+      margin-top: 2rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: opacity 0.2s;
+    }
+    .case-toggle:hover { opacity: 0.7; }
+    .case-toggle .arrow {
+      transition: transform 0.3s ease;
+      display: inline-block;
+    }
+    .case-card.open .case-toggle .arrow { transform: rotate(45deg); }
+
+    /* BACKGROUND */
+    .background-section { padding-bottom: 3rem; }
+    .bg-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 3rem;
+    }
+    .bg-item {
+      background: var(--bg);
+      padding: 2rem;
+    }
+    .bg-item-role {
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .bg-item-org {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 0.25rem;
+    }
+    .bg-item-detail {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* CONTACT */
+    .contact-inner {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .contact-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 0.5rem;
+    }
+    .contact-links a {
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .contact-links a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+    .contact-headline {
+      font-family: var(--serif);
+      font-size: 3.5rem;
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.25rem;
+    }
+    .contact-headline em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .contact-sub {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 420px;
+    }
+
+    /* FOOTER */
+    footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 3rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    footer p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+    }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    /* NOISE OVERLAY */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 999;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      section { padding: 4rem 1.5rem; }
+      .hero { padding: 8rem 1.5rem 4rem; }
+      .hero-name { font-size: clamp(3rem, 14vw, 5rem); }
+      .hero-bottom { flex-direction: column; gap: 1.5rem; }
+      .hero-meta { text-align: left; }
+      .about-inner, .contact-inner { grid-template-columns: 1fr; gap: 1.5rem; }
+      .cases { grid-template-columns: 1fr; }
+      .case-card:nth-child(3) { grid-column: span 1; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .bg-grid { grid-template-columns: 1fr; }
+      .case-card:nth-child(3) { grid-column: span 1; }
+      .divider { padding: 0 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#" class="nav-name">Kai Antoine</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <p class="hero-eyebrow">Strategy &amp; Operations</p>
+    <h1 class="hero-name">Kai<br /><em>Antoine</em></h1>
+    <div class="hero-bottom">
+      <p class="hero-tagline">
+        Thinks like an investor. Builds like an operator.
+        HBA Candidate at Ivey Business School.
+      </p>
+      <div class="hero-meta">
+        <p>Ivey Business School — HBA 2027</p>
+        <p style="color: var(--accent);">Dean's Honors List — Class of 2027</p>
+        <p>PwC Consulting — Summer 2026</p>
+        <p>One Queen Capital — Prior</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider" />
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-inner reveal">
+      <span class="section-label">About</span>
+      <div class="about-text">
+        <p>
+          I study business at <strong>Ivey Business School</strong> and spend most of my time at the intersection of strategy, operations, and private markets. My work spans investment analysis, market entry strategy, and operational frameworks — built with the same rigour I'd apply on a client engagement.
+        </p>
+        <p>
+          Before Ivey, I worked at <strong>One Queen Capital</strong>, a private investment firm covering private equity, private debt, infrastructure, and real assets. This summer I'm joining <strong>PwC Consulting</strong> on the digital operations team. Long term, I'm building toward founding and investing at the intersection of technology and hard industries.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- WORK -->
+  <section id="work">
+    <div class="work-header reveal">
+      <h2 class="work-title">Selected Work</h2>
+      <span class="work-count">03 Case Studies</span>
+    </div>
+
+    <div class="cases">
+
+      <!-- CASE 1 -->
+      <div class="case-card reveal" onclick="toggleCase(this)">
+        <p class="case-number">01 / 03</p>
+        <div class="case-category">
+          <span class="tag">Market Entry</span>
+          <span class="tag">Strategy</span>
+          <span class="tag">Proptech</span>
+        </div>
+        <h3 class="case-title">Ontario Property Management Market Entry</h3>
+        <p class="case-org">PropFlow — Independent Research</p>
+        <p class="case-body">
+          Evaluated the viability and go-to-market approach for an AI-native property management platform targeting Ontario's residential rental sector.
+        </p>
+        <div class="case-detail">
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Problem</h4>
+              <p>What is the addressable opportunity for an AI-native property management platform in Ontario's residential rental market, and where does the competitive white space lie?</p>
+            </div>
+            <div class="detail-col">
+              <h4>Approach</h4>
+              <ul>
+                <li>TAM/SAM/SOM sizing for the 100–2,000 unit mid-market</li>
+                <li>Competitive landscape mapping (Yardi, AppFolio, Buildium vs. Canadian incumbents)</li>
+                <li>Regulatory moat analysis — Ontario RTA, PIPEDA compliance burden</li>
+                <li>Workflow-by-workflow automation opportunity mapping</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Output</h4>
+              <ul>
+                <li>Full business overview document</li>
+                <li>Market sizing model</li>
+                <li>Go-to-market sequencing recommendation</li>
+                <li>Course deliverables at Ivey Business School</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-insight">
+            <p><span>Key Insight</span>Ontario's 100–2,000 unit mid-market is structurally underserved by both enterprise platforms and DIY tools. RTA compliance complexity — typically treated as a cost — functions as a defensible moat when embedded natively in the product layer, making it prohibitively difficult for generalist competitors to replicate.</p>
+          </div>
+        </div>
+        <button class="case-toggle" tabindex="-1">
+          <span>Read More</span>
+          <span class="arrow">+</span>
+        </button>
+      </div>
+
+      <!-- CASE 2 -->
+      <div class="case-card reveal" onclick="toggleCase(this)" style="transition-delay:0.1s">
+        <p class="case-number">02 / 03</p>
+        <div class="case-category">
+          <span class="tag">Operations</span>
+          <span class="tag">Product Strategy</span>
+          <span class="tag">Sports Tech</span>
+        </div>
+        <h3 class="case-title">Product Roadmap Prioritization Under Resource Constraints</h3>
+        <p class="case-org">LVLup Sports — Strategy Engagement</p>
+        <p class="case-body">
+          Built a structured framework to allocate limited engineering capacity across 12 competing product initiatives for a sports analytics startup.
+        </p>
+        <div class="case-detail">
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Problem</h4>
+              <p>How should a capital-constrained sports analytics startup prioritize 12 active product initiatives to maximize strategic value delivered per sprint?</p>
+            </div>
+            <div class="detail-col">
+              <h4>Approach</h4>
+              <ul>
+                <li>Five-criterion weighted scoring matrix (strategic value, revenue impact, effort, network leverage, retention)</li>
+                <li>Capacity waterfall model mapping available engineering hours to initiative cost</li>
+                <li>Phased three-quarter roadmap with decision gates</li>
+                <li>Capper network segmentation and tier-based engagement strategy</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Output</h4>
+              <ul>
+                <li>Weighted scoring matrix (Excel)</li>
+                <li>Capacity waterfall model</li>
+                <li>Phased roadmap with prioritization rationale</li>
+                <li>Outreach and engagement framework for capper network</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-insight">
+            <p><span>Key Insight</span>Revenue-generating features with embedded network leverage were systematically underweighted by the existing roadmap, which optimized for feature completion rather than strategic impact. Reordering by impact-to-effort ratio shifted 40% of capacity toward initiatives with compounding returns on the capper network.</p>
+          </div>
+        </div>
+        <button class="case-toggle" tabindex="-1">
+          <span>Read More</span>
+          <span class="arrow">+</span>
+        </button>
+      </div>
+
+      <!-- CASE 3 -->
+      <div class="case-card reveal" onclick="toggleCase(this)" style="transition-delay:0.15s">
+        <p class="case-number">03 / 03</p>
+        <div class="case-category">
+          <span class="tag">Private Equity</span>
+          <span class="tag">ETA</span>
+          <span class="tag">Deal Strategy</span>
+        </div>
+        <h3 class="case-title">Search Strategy for Canadian SMB Acquisition</h3>
+        <p class="case-org">Self-Directed Research</p>
+        <p class="case-body">
+          Defined acquisition criteria and search strategy for a self-funded search targeting Canadian SMBs in the $1–5M EBITDA range.
+        </p>
+        <div class="case-detail">
+          <div class="detail-grid">
+            <div class="detail-col">
+              <h4>Problem</h4>
+              <p>What acquisition criteria and search strategy maximizes risk-adjusted returns for a first-time acquirer operating without institutional backing in the Canadian lower-middle market?</p>
+            </div>
+            <div class="detail-col">
+              <h4>Approach</h4>
+              <ul>
+                <li>Industry screening for fragmented markets with recurring revenue and owner-operated dynamics</li>
+                <li>Valuation benchmarking by sector (EV/EBITDA multiples, debt serviceability)</li>
+                <li>Deal sourcing channel analysis — broker networks vs. direct proprietary outreach</li>
+                <li>Risk factor mapping: customer concentration, key-man dependency, margin structure</li>
+              </ul>
+            </div>
+            <div class="detail-col">
+              <h4>Output</h4>
+              <ul>
+                <li>Sector screening framework</li>
+                <li>Acquisition criteria matrix</li>
+                <li>Deal sourcing strategy and outreach playbook</li>
+                <li>Risk-adjusted return analysis by business archetype</li>
+              </ul>
+            </div>
+          </div>
+          <div class="key-insight">
+            <p><span>Key Insight</span>Blue-collar service businesses with minimal customer concentration, high switching costs, and recurring maintenance contracts offer the best risk-adjusted entry point for self-funded searchers. Proprietary outreach to retiring owner-operators — before they engage a broker — is the primary lever for acquiring at below-market multiples.</p>
+          </div>
+        </div>
+        <button class="case-toggle" tabindex="-1">
+          <span>Read More</span>
+          <span class="arrow">+</span>
+        </button>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- BACKGROUND -->
+  <section id="background" class="background-section">
+    <div class="about-inner reveal">
+      <span class="section-label">Background</span>
+      <div>
+        <p style="font-size:1rem; color: var(--text-secondary); margin-bottom: 0.5rem;">
+          Grounded in private markets and business strategy. Trained at Ivey through a case-intensive curriculum with real-world consulting and investment experience on either side.
+        </p>
+      </div>
+    </div>
+    <div class="bg-grid reveal">
+      <div class="bg-item">
+        <p class="bg-item-role">Current — Summer 2026</p>
+        <p class="bg-item-org">PwC Consulting</p>
+        <p class="bg-item-detail">Digital Operations & Utilities — Strategy Consulting</p>
+      </div>
+      <div class="bg-item">
+        <p class="bg-item-role">Prior Experience</p>
+        <p class="bg-item-org">One Queen Capital</p>
+        <p class="bg-item-detail">Private Equity · Private Debt · Infrastructure · Real Assets</p>
+      </div>
+      <div class="bg-item">
+        <p class="bg-item-role">Education — HBA 2027</p>
+        <p class="bg-item-org">Ivey Business School</p>
+        <p class="bg-item-detail">Western University · Case-Method · Honours Business Administration</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="contact-inner reveal">
+      <span class="section-label">Contact</span>
+      <div>
+        <h2 class="contact-headline">Let's<br /><em>Connect</em></h2>
+        <p class="contact-sub">Particularly interested in financial services, digital operations, and the intersection of strategy and private markets. Open to conversations about where those things collide.</p>
+        <div class="contact-links">
+          <a href="mailto:kantoine.hba2027@ivey.ca">Email</a>
+          <a href="https://www.linkedin.com/in/kai-antoine/" target="_blank">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <p>Kai Antoine — 2026</p>
+    <p>Ivey Business School, Western University</p>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // Reveal on scroll
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    reveals.forEach(el => observer.observe(el));
+
+    // Toggle case study
+    function toggleCase(card) {
+      const isOpen = card.classList.contains('open');
+      document.querySelectorAll('.case-card.open').forEach(c => c.classList.remove('open'));
+      if (!isOpen) card.classList.add('open');
+    }
+  </script>
+
+</body>
+</html>
